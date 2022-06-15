@@ -8,11 +8,9 @@
       },
       "locked": {
         "lastModified": 1655157059,
-        "narHash": "sha256-LM4oEs7EQPg7E/mW6TyTq008wgundx0hsVlZLUDttvA=",
-        "owner": "divnix",
-        "repo": "POP",
-        "rev": "bf6cf08622706330bc14f84887c76fd7162e2328",
-        "type": "github"
+        "narHash": "sha256-LaXHOxKCp+YnG9YhrKgv+/vpOFJ3W4Yelo3Aui6vAQY=",
+        "type": "git",
+        "url": "file:///home/pachums/Repos/POP"
       },
       "original": {
         "owner": "divnix",

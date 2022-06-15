@@ -139,23 +139,23 @@
           _nextTarget = 0;
         };
 
-      extenders = {
+      extenders = let
         addTarget = target: self: super: let
           letters = ["A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z"];
-          refId = builtins.elemAt letters self._nextTarget;
+          refId = builtins.elemAt letters super._nextTarget;
           newTarget = POP.lib.pop {
             supers = [target];
-            extension = _: _: {
-              refId = builtins.elemAt letters super._nextTarget;
-            };
+            defaults = {inherit refId;};
           };
         in {
           _nextTarget = super._nextTarget + 1;
           targets = super.targets ++ [newTarget];
         };
+      in {
+        inherit addTarget;
         addTargets = targets: self: super: {
-          targets = super.targets ++ (nixlib.lib.foldl (p: t: p.addTarget t) targets self);
+          targets = super.targets ++ (map (t: ))
         };
-      };
+      }
     };
 }

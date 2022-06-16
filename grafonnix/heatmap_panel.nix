@@ -153,9 +153,7 @@
         };
       in {
         inherit addTarget;
-        addTargets = targets: self: super: {
-          targets = super.targets ++ (map (t: ))
-        };
+        # addTargets(targets):: std.foldl(function(p, t) p.addTarget(t), targets, self),
       }
     };
 }

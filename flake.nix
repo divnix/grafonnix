@@ -5,6 +5,14 @@
 
   # Development Dependencies
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.05";
+  inputs.flake-compat = {
+    url = "github:edolstra/flake-compat";
+    flake = false;
+  };
+  inputs.grafonnet = {
+    url = "github:grafana/grafonnet-lib";
+    flake = false;
+  };
 
   outputs = {
     self,
@@ -12,8 +20,19 @@
     nixlib,
     POP,
     nixpkgs,
+    ...
   }: let
     lib = POP.lib // nixlib.lib;
+
+    supportedSystems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin"];
+    # Pass this flake(self) as "grafonnix"
+    polyfillInputs = self.inputs // {grafonnix = self;};
+    polyfillOutput = loc:
+      nixlib.lib.genAttrs supportedSystems (system:
+        import loc {
+          inherit system;
+          inputs = polyfillInputs;
+        });
   in {
     lib = {
       alertlist = import ./alertlist.nix {inherit lib;};
@@ -46,8 +65,7 @@
       timepicker = import ./timepicker.nix {inherit lib;};
       transformation = import ./transformation.nix {inherit lib;};
     };
-    formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
-    formatter.aarch64-linux = nixpkgs.legacyPackages.aarch64-linux.alejandra;
-    formatter.x86_64-darwin = nixpkgs.legacyPackages.x86_64-darwin.alejandra;
+    checks = polyfillOutput ./checks;
+    formatter = nixlib.lib.genAttrs supportedSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
   };
 }

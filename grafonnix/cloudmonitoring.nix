@@ -57,9 +57,9 @@
           valueType = valueType;
         };
       sloQuery =
-        (lib.optionalAttrs (alias != null) {
+        lib.optionalAttrs (alias != null) {
           aliasBy = alias;
-        })
+        }
         // {
           alignmentPeriod = period;
           projectName = project;

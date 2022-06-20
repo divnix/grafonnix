@@ -1,7 +1,4 @@
-{
-  nixlib,
-  POP,
-}: {
+{lib}: {
   new = {
     title ? "Dashboard Row",
     height ? null,
@@ -10,13 +7,13 @@
     showTitle ? null,
     titleSize ? "h6",
   }:
-    POP.lib.pop {
+    lib.pop {
       defaults =
         {
           inherit collapse;
           collapsed = collapse;
         }
-        // nixlib.lib.optionalAttrs (height != null) {
+        // lib.optionalAttrs (height != null) {
           inherit height;
         }
         // {

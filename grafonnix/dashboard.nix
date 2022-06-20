@@ -125,7 +125,7 @@ in {
               # https://github.com/kausalco/public/blob/master/klumps/grafana.libsonnet
               n =
                 lib.foldl (numOfPanels: p:
-                  if lib.elem "panels" p
+                  if p ? panels
                   then numOfPanels + 1 + (lib.length p.panels)
                   else numOfPanels + 1)
                 0
@@ -146,7 +146,7 @@ in {
                           else ((lib.elemAt _panels (i - 1)).id - nextPanel) + 1
                         );
                     }
-                    // lib.optionalAttrs (lib.elem "panels" (lib.elemAt newpanels i)) {
+                    // lib.optionalAttrs ((lib.elemAt newpanels i) ? panels) {
                       panels = lib.genList (
                         j:
                           (lib.elemAt (lib.elemAt newpanels i).panels j) {

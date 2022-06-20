@@ -29,21 +29,21 @@
   }:
     lib.kPop
     (lib.optionalAttrs (hide != null) {
-      inherit hide;
-    })
-    // lib.optionalAttrs (datasource != null) {
-      inherit datasource;
-    }
-    // {
-      expr = expr;
-      format = format;
-      intervalFactor = intervalFactor;
-      legendFormat = legendFormat;
-    }
-    // lib.optionalAttrs (interval != null) {
-      interval = interval;
-    }
-    // lib.optionalAttrs (instant != null) {
-      instant = instant;
-    };
+        inherit hide;
+      }
+      // lib.optionalAttrs (datasource != null) {
+        inherit datasource;
+      }
+      // {
+        expr = expr;
+        format = format;
+        intervalFactor = intervalFactor;
+        legendFormat = legendFormat;
+      }
+      // lib.optionalAttrs (interval != null) {
+        interval = interval;
+      }
+      // lib.optionalAttrs (instant != null) {
+        instant = instant;
+      });
 }

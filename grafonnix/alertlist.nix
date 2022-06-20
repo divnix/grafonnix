@@ -29,30 +29,30 @@
     datasource ? null,
   }:
     lib.kPop (lib.optionalAttrs (transparent != null) {
-      inherit transparent;
-    })
-    // {
-      title = title;
-    }
-    // lib.optionalAttrs (span != null) {
-      inherit span;
-    }
-    // {
-      type = "alertlist";
-      show = show;
-      limit = limit;
-      sortOrder = sortOrder;
-    }
-    // lib.optionalAttrs (show != "changes") {
-      stateFilter = stateFilter;
-    }
-    // {
-      onlyAlertsOnDashboard = onlyAlertsOnDashboard;
-    }
-    // lib.optionalAttrs (description != null) {
-      description = description;
-    }
-    // {
-      datasource = datasource;
-    };
+        inherit transparent;
+      }
+      // {
+        title = title;
+      }
+      // lib.optionalAttrs (span != null) {
+        inherit span;
+      }
+      // {
+        type = "alertlist";
+        show = show;
+        limit = limit;
+        sortOrder = sortOrder;
+      }
+      // lib.optionalAttrs (show != "changes") {
+        stateFilter = stateFilter;
+      }
+      // {
+        onlyAlertsOnDashboard = onlyAlertsOnDashboard;
+      }
+      // lib.optionalAttrs (description != null) {
+        description = description;
+      }
+      // {
+        datasource = datasource;
+      });
 }

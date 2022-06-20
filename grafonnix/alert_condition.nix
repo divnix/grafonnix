@@ -28,7 +28,7 @@
     reducerParams ? [],
     reducerType ? "avg",
   }:
-    lib.POP.kPop
+    lib.kPop
     {
       evaluator = {
         params =

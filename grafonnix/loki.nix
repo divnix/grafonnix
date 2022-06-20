@@ -16,10 +16,10 @@
   }:
     lib.kPop
     (lib.optionalAttrs (hide != null) {
-      inherit hide;
-    })
-    // {
-      expr = expr;
-      legendFormat = legendFormat;
-    };
+        inherit hide;
+      }
+      // {
+        expr = expr;
+        legendFormat = legendFormat;
+      });
 }

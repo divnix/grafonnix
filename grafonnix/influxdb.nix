@@ -40,9 +40,9 @@
       extension = self: super: let
         it = self;
       in
-        (lib.optionalAttrs (alias != null) {
+        lib.optionalAttrs (alias != null) {
           inherit alias;
-        })
+        }
         // lib.optionalAttrs (datasource != null) {
           inherit datasource;
         }

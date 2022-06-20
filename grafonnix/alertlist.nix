@@ -1,6 +1,6 @@
-{ POP, nixlib }:
-{
-  /**
+{lib}: {
+  /*
+    *
    * Creates an [Alert list panel](https://grafana.com/docs/grafana/latest/panels/visualizations/alert-list-panel/)
    *
    * @name alertlist.new
@@ -17,35 +17,42 @@
    * @param datasource (optional)
    */
   new = {
-    title?"",
-    span?null,
-    show?"current",
-    limit?10,
-    sortOrder?1,
-    stateFilter?[],
-    onlyAlertsOnDashboard?true,
-    transparent?null,
-    description?null,
-    datasource?null,
+    title ? "",
+    span ? null,
+    show ? "current",
+    limit ? 10,
+    sortOrder ? 1,
+    stateFilter ? [],
+    onlyAlertsOnDashboard ? true,
+    transparent ? null,
+    description ? null,
+    datasource ? null,
   }:
-    POP.lib.kPop (nixlib.lib.optionalAttrs (transparent != null) {
+    lib.kPop (lib.optionalAttrs (transparent != null) {
       inherit transparent;
-    }) // {
-      title= title;
-    } // nixlib.lib.optionalAttrs (span != null) {
+    })
+    // {
+      title = title;
+    }
+    // lib.optionalAttrs (span != null) {
       inherit span;
-    } // {
-      type= "alertlist";
-      show= show;
-      limit= limit;
-      sortOrder= sortOrder;
-      // nixlib.lib.optionalAttrs ( show != "changes" ) {
-      stateFilter= stateFilter;
-      } // {
-      onlyAlertsOnDashboard= onlyAlertsOnDashboard;
-      } // nixlib.lib.optionalAttrs ( description != null ) {
-      description= description;
-      } // {
-      datasource= datasource;
-      };
+    }
+    // {
+      type = "alertlist";
+      show = show;
+      limit = limit;
+      sortOrder = sortOrder;
+    }
+    // lib.optionalAttrs (show != "changes") {
+      stateFilter = stateFilter;
+    }
+    // {
+      onlyAlertsOnDashboard = onlyAlertsOnDashboard;
+    }
+    // lib.optionalAttrs (description != null) {
+      description = description;
+    }
+    // {
+      datasource = datasource;
+    };
 }

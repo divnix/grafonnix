@@ -7,8 +7,8 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1655157059,
-        "narHash": "sha256-LaXHOxKCp+YnG9YhrKgv+/vpOFJ3W4Yelo3Aui6vAQY=",
+        "lastModified": 1655487772,
+        "narHash": "sha256-KdVs9RZfjV3QCoLBW1FUxtM44G8Mgb4ME1uEx4lK/ek=",
         "type": "git",
         "url": "file:///home/pachums/Repos/POP"
       },

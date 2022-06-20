@@ -1,6 +1,6 @@
-{ POP, nixlib }:
-{
-  /**
+{lib}: {
+  /*
+    *
    * Creates [links](https://grafana.com/docs/grafana/latest/linking/linking-overview/) to navigate to other dashboards.
    *
    * @param title Human-readable label for the link.
@@ -18,23 +18,24 @@
   dashboards = {
     title,
     tags,
-    asDropdown?true,
-    includeVars?false,
-    keepTime?false,
-    icon?"external link",
-    url?"",
-    targetBlank?false,
-    type?"dashboards",
-  }: POP.lib.kPop
+    asDropdown ? true,
+    includeVars ? false,
+    keepTime ? false,
+    icon ? "external link",
+    url ? "",
+    targetBlank ? false,
+    type ? "dashboards",
+  }:
+    lib.kPop
     {
-      asDropdown= asDropdown;
-      icon= icon;
-      includeVars= includeVars;
-      keepTime= keepTime;
-      tags= tags;
-      title= title;
-      type= type;
-      url= url;
-      targetBlank= targetBlank;
+      asDropdown = asDropdown;
+      icon = icon;
+      includeVars = includeVars;
+      keepTime = keepTime;
+      tags = tags;
+      title = title;
+      type = type;
+      url = url;
+      targetBlank = targetBlank;
     };
 }

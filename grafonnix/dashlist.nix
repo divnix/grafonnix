@@ -1,6 +1,6 @@
-{ POP, nixlib }:
-{
-  /**
+{lib}: {
+  /*
+    *
    * Creates a [dashlist panel](https://grafana.com/docs/grafana/latest/panels/visualizations/dashboard-list-panel/).
    * It requires the dashlist panel plugin in grafana, which is built-in.
    *
@@ -19,25 +19,30 @@
    */
   new = {
     title,
-    description?null,
-    query?null,
-    tags?[],
-    recent?true,
-    search?false,
-    starred?false,
-    headings?true,
-    limit?10,
-  }: POP.lib.kPop {
-    type= "dashlist";
-    title= title;
-    query= if query != null then query else "";
-    tags= tags;
-    recent= recent;
-    search= search;
-    starred= starred;
-    headings= headings;
-    limit= limit;
-  } // nixlib.optionalAttrs (description != null) {
-    description= description;
-  };
+    description ? null,
+    query ? null,
+    tags ? [],
+    recent ? true,
+    search ? false,
+    starred ? false,
+    headings ? true,
+    limit ? 10,
+  }:
+    lib.kPop {
+      type = "dashlist";
+      title = title;
+      query =
+        if query != null
+        then query
+        else "";
+      tags = tags;
+      recent = recent;
+      search = search;
+      starred = starred;
+      headings = headings;
+      limit = limit;
+    }
+    // lib.optionalAttrs (description != null) {
+      description = description;
+    };
 }

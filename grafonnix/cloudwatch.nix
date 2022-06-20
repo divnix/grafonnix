@@ -1,6 +1,6 @@
-{ POP, nixlib }:
-{
-  /**
+{lib}: {
+  /*
+    *
    * Creates a [CloudWatch target](https://grafana.com/docs/grafana/latest/datasources/cloudwatch/)
    *
    * @name cloudwatch.target
@@ -17,7 +17,7 @@
    * @param id (optional)
    * @param expression (optional)
    * @param hide (optional)
-
+   
    * @return Panel target
    */
 
@@ -25,29 +25,32 @@
     region,
     namespace,
     metric,
-    datasource?null,
-    statistic?"Average",
-    alias?null,
-    highResolution?false,
-    period?"auto",
-    dimensions?{},
-    id?null,
-    expression?null,
-    hide?null
-  }: nixlib.lib.kPop {
-    region= region;
-    namespace= namespace;
-    metricName= metric;
-  } // nixlib.lib.optionalAttrs (datasource != null) { datasource= datasource; }
-  // {
-    statistics= [statistic];
-  } // nixlib.lib.optionalAttrs (alias != null) { alias= alias; }
-  // {
-    highResolution= highResolution;
-    period= period;
-    dimensions= dimensions;
-  } // nixlib.lib.optionalAttrs (id != null) { id= id; }
-  // nixlib.lib.optionalAttrs (expression != null) {expression= expression;}
-  // nixlib.lib.optionalAttrs (hide != null) {hide= hide;};
-
+    datasource ? null,
+    statistic ? "Average",
+    alias ? null,
+    highResolution ? false,
+    period ? "auto",
+    dimensions ? {},
+    id ? null,
+    expression ? null,
+    hide ? null,
+  }:
+    lib.kPop {
+      region = region;
+      namespace = namespace;
+      metricName = metric;
+    }
+    // lib.optionalAttrs (datasource != null) {datasource = datasource;}
+    // {
+      statistics = [statistic];
+    }
+    // lib.optionalAttrs (alias != null) {alias = alias;}
+    // {
+      highResolution = highResolution;
+      period = period;
+      dimensions = dimensions;
+    }
+    // lib.optionalAttrs (id != null) {id = id;}
+    // lib.optionalAttrs (expression != null) {expression = expression;}
+    // lib.optionalAttrs (hide != null) {hide = hide;};
 }

@@ -1,6 +1,6 @@
-{ nixlib, POP }:
-{
-  /**
+{lib}: {
+  /*
+    *
    * Creates a [Prometheus target](https://grafana.com/docs/grafana/latest/datasources/prometheus/)
    * to be added to panels.
    *
@@ -19,26 +19,31 @@
    */
   target = {
     expr,
-    format?"time_series",
-    intervalFactor?2,
-    legendFormat?"",
-    datasource?null,
-    interval?null,
-    instant?null,
-    hide?null,
-  }: POP.lib.kPop
-    ( nixlib.lib.optionalAttrs (hide != null) {
+    format ? "time_series",
+    intervalFactor ? 2,
+    legendFormat ? "",
+    datasource ? null,
+    interval ? null,
+    instant ? null,
+    hide ? null,
+  }:
+    lib.kPop
+    (lib.optionalAttrs (hide != null) {
       inherit hide;
-    }) // nixlib.lib.optionalAttrs (datasource != null) {
+    })
+    // lib.optionalAttrs (datasource != null) {
       inherit datasource;
-    } // {
-    expr= expr;
-    format= format;
-    intervalFactor= intervalFactor;
-    legendFormat= legendFormat;
-    } // nixlib.lib.optionalAttrs (interval != null) {
-      interval= interval;
-    } // nixlib.lib.optionalAttrs (instant != null) {
-      instant= instant;
+    }
+    // {
+      expr = expr;
+      format = format;
+      intervalFactor = intervalFactor;
+      legendFormat = legendFormat;
+    }
+    // lib.optionalAttrs (interval != null) {
+      interval = interval;
+    }
+    // lib.optionalAttrs (instant != null) {
+      instant = instant;
     };
 }

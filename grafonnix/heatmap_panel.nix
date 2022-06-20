@@ -1,7 +1,4 @@
-{
-  nixlib,
-  POP,
-}: {
+{lib}: {
   new = {
     title,
     datasource ? null,
@@ -41,13 +38,13 @@
     yBucketSize ? null,
     maxDataPoints ? null,
   }:
-    POP.lib.pop {
+    lib.pop {
       defaults =
         {
           inherit title;
           type = "heatmap";
         }
-        // nixlib.lib.optionalAttrs (description != null) {
+        // lib.optionalAttrs (description != null) {
           inherit description;
         }
         // {
@@ -63,17 +60,17 @@
               max = color_max;
               min = color_min;
             }
-            // nixlib.lib.optionalAttrs (color_mode == "spectrum") {
+            // lib.optionalAttrs (color_mode == "spectrum") {
               colorScheme = color_colorScheme;
             }
-            // nixlib.lib.optionalAttrs (color_max != null) {
+            // lib.optionalAttrs (color_max != null) {
               inherit color_max;
             }
-            // nixlib.lib.optionalAttrs (color_min != null) {
+            // lib.optionalAttrs (color_min != null) {
               inherit color_min;
             };
         }
-        // nixlib.lib.optionalAttrs (dataFormat != null) {
+        // lib.optionalAttrs (dataFormat != null) {
           inherit dataFormat;
         }
         // {
@@ -82,16 +79,16 @@
           inherit highlightCards;
           legend.show = legend_show;
         }
-        // nixlib.lib.optionalAttrs (minSpan != null) {
+        // lib.optionalAttrs (minSpan != null) {
           inherit minSpan;
         }
-        // nixlib.lib.optionalAttrs (span != null) {
+        // lib.optionalAttrs (span != null) {
           inherit span;
         }
-        // nixlib.lib.optionalAttrs (repeat != null) {
+        // lib.optionalAttrs (repeat != null) {
           inherit repeat;
         }
-        // nixlib.lib.optionalAttrs (repeatDirection != null) {
+        // lib.optionalAttrs (repeatDirection != null) {
           inherit repeatDirection;
         }
         // {
@@ -100,7 +97,7 @@
             showHistogram = tooltip_showHistogram;
           };
         }
-        // nixlib.lib.optionalAttrs (tooltipDecimals != null) {
+        // lib.optionalAttrs (tooltipDecimals != null) {
           inherit tooltipDecimals;
         }
         // {
@@ -120,18 +117,18 @@
               show = yAxis_show;
               splitFactor = yAxis_splitFactor;
             }
-            // nixlib.lib.optionalAttrs (dataFormat == "timeseries") {
+            // lib.optionalAttrs (dataFormat == "timeseries") {
               logBase = yAxis_logBase;
               max = yAxis_max;
               min = yAxis_min;
             };
           inherit yBucketBound;
         }
-        // nixlib.lib.optionalAttrs (dataFormat == "timeseries") {
+        // lib.optionalAttrs (dataFormat == "timeseries") {
           inherit yBucketNumber;
           inherit yBucketSize;
         }
-        // nixlib.lib.optionalAttrs (maxDataPoints != null) {
+        // lib.optionalAttrs (maxDataPoints != null) {
           inherit maxDataPoints;
         }
         // {
@@ -139,21 +136,25 @@
           _nextTarget = 0;
         };
 
-      extenders = let
-        addTarget = target: self: super: let
-          letters = ["A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z"];
-          refId = builtins.elemAt letters super._nextTarget;
-          newTarget = POP.lib.pop {
-            supers = [target];
-            defaults = {inherit refId;};
-          };
-        in {
-          _nextTarget = super._nextTarget + 1;
-          targets = super.targets ++ [newTarget];
-        };
-      in {
-        inherit addTarget;
-        # addTargets(targets):: std.foldl(function(p, t) p.addTarget(t), targets, self),
-      }
+      extension = self: super: {
+        addTarget = target:
+          self (self: super: {
+            _nextTarget = super._nextTarget + 1;
+            targets = let
+              letters = ["A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z"];
+              refId = builtins.elemAt letters super._nextTarget;
+              newTarget = target {
+                inherit refId;
+              };
+            in
+              super.targets ++ [newTarget];
+          });
+        addTargets = targets: lib.foldl (p: t: p.addTarget t) self targets;
+      };
+      specialNames = [
+        "_nextTarget"
+        "addTarget"
+        "addTargets"
+      ];
     };
 }

@@ -1,6 +1,6 @@
-{ POP, nixlib }:
-{
-  /**
+{lib}: {
+  /*
+    *
    * Creates a [Loki target](https://grafana.com/docs/grafana/latest/datasources/loki/)
    *
    * @name loki.target
@@ -11,13 +11,15 @@
    */
   target = {
     expr,
-    hide?null,
-    legendFormat?"",
-  }: POP.lib.kPop
-    (nixlib.lib.optionalAttrs (hide != null) {
+    hide ? null,
+    legendFormat ? "",
+  }:
+    lib.kPop
+    (lib.optionalAttrs (hide != null) {
       inherit hide;
-    }) // {
-    expr= expr;
-    legendFormat= legendFormat;
+    })
+    // {
+      expr = expr;
+      legendFormat = legendFormat;
     };
 }

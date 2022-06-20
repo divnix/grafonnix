@@ -1,6 +1,9 @@
-{ POP, nixlib }:
 {
-  /**
+  POP,
+  nixlib,
+}: {
+  /*
+    *
    * Creates an [Elasticsearch target](https://grafana.com/docs/grafana/latest/datasources/elasticsearch/)
    *
    * @name elasticsearch.target
@@ -16,39 +19,44 @@
   target = {
     query,
     timeField,
-    id?null,
-    datasource?null,
-    metrics?[{
-      field= "value";
-      id= null;
-      type= "percentiles";
-      settings= {
-        percents= [
-          "90"
-        ];
-      };
-    }],
-    bucketAggs?[{
-      field= "timestamp";
-      id= null;
-      type= "date_histogram";
-      settings= {
-        interval= "1s";
-        min_doc_count= 0;
-        trimEdges= 0;
-      };
-    }],
-    alias?null,
+    id ? null,
+    datasource ? null,
+    metrics ? [
+      {
+        field = "value";
+        id = null;
+        type = "percentiles";
+        settings = {
+          percents = [
+            "90"
+          ];
+        };
+      }
+    ],
+    bucketAggs ? [
+      {
+        field = "timestamp";
+        id = null;
+        type = "date_histogram";
+        settings = {
+          interval = "1s";
+          min_doc_count = 0;
+          trimEdges = 0;
+        };
+      }
+    ],
+    alias ? null,
   }:
     POP.lib.kPop (nixlib.lib.optionalAttrs (datasource != null) {
-    datasource= datasource;
-  }) // {
-    query= query;
-    id= id;
-    timeField= timeField;
-    bucketAggs= bucketAggs;
-    metrics= metrics;
-    alias= alias;
-    # TODO: generate bucket ids
-  },
+      datasource = datasource;
+    })
+    // {
+      query = query;
+      id = id;
+      timeField = timeField;
+      bucketAggs = bucketAggs;
+      metrics = metrics;
+      alias = alias;
+      # TODO: generate bucket ids
+    };
 }

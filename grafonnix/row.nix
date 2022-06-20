@@ -34,25 +34,20 @@
           inherit titleSize;
         };
 
-      extenders = {
-        addPanels = panels: self: super: {
-          panels = super.panels ++ panels;
-        };
+      extension = self: super: {
+        addPanels = panels:
+          self (self: super: {
+            panels = super.panels ++ panels;
+          });
         addPanel = {
           panel,
           gridPos ? {},
-        }: self: super: {
-          panels =
-            super.panels
-            ++ [
-              (POP.lib.pop {
-                supers = [panel];
-                extension = _: _: {
-                  inherit gridPos;
-                };
-              })
-            ];
-        };
+        }:
+          self (self: super: {
+            panels =
+              super.panels
+              ++ [(panel {inherit gridPos;})];
+          });
       };
     };
 }

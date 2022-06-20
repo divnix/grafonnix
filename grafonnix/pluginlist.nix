@@ -1,6 +1,6 @@
-{ POP, nixlib }:
-{
-  /**
+{lib}: {
+  /*
+    *
    * Returns a new pluginlist panel that can be added in a row.
    * It requires the pluginlist panel plugin in grafana, which is built-in.
    *
@@ -13,14 +13,17 @@
    */
   new = {
     title,
-    description?null,
-    limit?null,
-  }: {
-    type= "pluginlist";
-    title= title;
-  } // nixlib.optionalAttrs ( limit != null ) {
-    inherit limit;
-  } // nixlib.lib.optionalAttrs (description != null) {
-    inherit description;
-  };
+    description ? null,
+    limit ? null,
+  }:
+    lib.kPop {
+      type = "pluginlist";
+      title = title;
+    }
+    // lib.optionalAttrs (limit != null) {
+      inherit limit;
+    }
+    // lib.optionalAttrs (description != null) {
+      inherit description;
+    };
 }

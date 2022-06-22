@@ -37,6 +37,12 @@
     resultFormat ? "time_series",
   }:
     lib.pop {
+      visibility = {
+        where = false;
+        selectField = false;
+        addConverter = false;
+      };
+
       extension = self: super: let
         it = self;
       in
@@ -102,7 +108,7 @@
             value,
             condition ? null,
           }:
-            self (self: super: {
+            lib.extendPop self (self: super: {
               /*
                * Adds query tag condition ("Where" section)
                */
@@ -131,7 +137,7 @@
             });
 
           selectField = value:
-            self (self: super: {
+            lib.extendPop self (self: super: {
               /*
                * Adds InfluxDB selection ("field(value)" part of "Select" statement)
                */
@@ -151,7 +157,7 @@
             type,
             params ? [],
           }:
-            self (self: super: let
+            lib.extendPop self (self: super: let
               /*
                * Appends converter (aggregation, selector, etc.) to last added selection
                */

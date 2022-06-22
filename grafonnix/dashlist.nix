@@ -28,21 +28,21 @@
     headings ? true,
     limit ? 10,
   }:
-    lib.kPop {
-      type = "dashlist";
-      title = title;
-      query =
-        if query != null
-        then query
-        else "";
-      tags = tags;
-      recent = recent;
-      search = search;
-      starred = starred;
-      headings = headings;
-      limit = limit;
-    }
-    // lib.optionalAttrs (description != null) {
-      description = description;
-    };
+    lib.kPop ({
+        type = "dashlist";
+        title = title;
+        query =
+          if query != null
+          then query
+          else "";
+        tags = tags;
+        recent = recent;
+        search = search;
+        starred = starred;
+        headings = headings;
+        limit = limit;
+      }
+      // lib.optionalAttrs (description != null) {
+        description = description;
+      });
 }

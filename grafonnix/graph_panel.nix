@@ -136,6 +136,19 @@
     interval ? null,
   }:
     lib.pop {
+      visibility = {
+        _nextTarget = false;
+        addTarget = false;
+        addTargets = false;
+        addSeriesOverride = false;
+        resetYaxes = false;
+        addYaxis = false;
+        addAlert = false;
+        addLink = false;
+        addLinks = false;
+        addOverride = false;
+        addOverrides = false;
+      };
       extension = self: super:
         {
           title = title;
@@ -309,7 +322,7 @@
             };
           _nextTarget = 0;
           addTarget = target:
-            self (self: super:
+            lib.extendPop self (self: super:
               # automatically ref id in added targets.
               # https://github.com/kausalco/public/blob/master/klumps/grafana.libsonnet
               {
@@ -317,7 +330,7 @@
                 targets = let
                   letters = ["A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z"];
                   refId = builtins.elemAt letters super._nextTarget;
-                  newTarget = target {
+                  newTarget = lib.kxPop target {
                     inherit refId;
                   };
                 in
@@ -325,7 +338,7 @@
               });
           addTargets = targets: lib.foldl (p: t: p.addTarget t) self targets;
           addSeriesOverride = override:
-            self (self: super: {
+            lib.extendPop self (self: super: {
               seriesOverrides = super.seriesOverrides ++ [override];
             });
           resetYaxes = self {
@@ -340,7 +353,7 @@
             logBase ? 1,
             decimals ? null,
           }:
-            self (self: super: {
+            lib.extendPop self (self: super: {
               yaxes = super.yaxes ++ [(self.yaxe {inherit format min max label show logBase decimals;})];
             });
           addAlert = {
@@ -353,8 +366,8 @@
             noDataState ? "no_data",
             notifications ? [],
             alertRuleTags ? {},
-          }:
-            self (self: super: let
+          }: let
+            extension = self: super: let
               it = self;
             in {
               _conditions = [];
@@ -371,13 +384,23 @@
                 alertRuleTags = alertRuleTags;
               };
               addCondition = condition:
-                self (self: super: {
+                lib.extendPop self (self: super: {
                   _conditions = super.conditions ++ [condition];
                 });
               addConditions = conditions: lib.foldl (p: c: p.addCondition c) it conditions;
-            });
+            };
+          in
+            lib.pop {
+              supers = [self];
+              visibility = {
+                _conditions = false;
+                addCondition = false;
+                addConditions = false;
+              };
+              inherit extension;
+            };
           addLink = link:
-            self (self: super: {
+            lib.extendPop self (self: super: {
               links = super.links ++ [link];
             });
           addLinks = links: lib.foldl (p: t: p.addLink t) self links;
@@ -385,7 +408,7 @@
             matcher ? null,
             properties ? null,
           }:
-            self (self: super: {
+            lib.extendPop self (self: super: {
               fieldConfig = lib.recursiveUpdate super.fieldConfig {
                 overrides =
                   super.fieldConfig.overrides

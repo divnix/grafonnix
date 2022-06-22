@@ -48,15 +48,15 @@
     alias ? null,
   }:
     POP.lib.kPop (nixlib.lib.optionalAttrs (datasource != null) {
-      datasource = datasource;
-    })
-    // {
-      query = query;
-      id = id;
-      timeField = timeField;
-      bucketAggs = bucketAggs;
-      metrics = metrics;
-      alias = alias;
-      # TODO: generate bucket ids
-    };
+        datasource = datasource;
+      }
+      // {
+        query = query;
+        id = id;
+        timeField = timeField;
+        bucketAggs = bucketAggs;
+        metrics = metrics;
+        alias = alias;
+        # TODO: generate bucket ids
+      });
 }

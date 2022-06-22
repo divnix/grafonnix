@@ -64,6 +64,22 @@
     pluginVersion ? "7",
   }:
     lib.pop {
+      visibility = {
+        _nextTarget = false;
+        _nextMapping = false;
+        addTarget = false;
+        addTargets = false;
+        addLink = false;
+        addLinks = false;
+        addThreshold = false;
+        addMapping = false;
+        addDataLink = false;
+        addOverride = false;
+        addOverrides = false;
+        addThresholds = false;
+        addMappings = false;
+        addDataLinks = false;
+      };
       defaults =
         {
           type = "gauge";
@@ -196,12 +212,12 @@
       extension = self: super:
         {
           addTarget = target:
-            self (self: super: {
+            lib.extendPop self (self: super: {
               _nextTarget = super._nextTarget + 1;
               targets = let
                 letters = ["A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z"];
                 refId = builtins.elemAt letters super._nextTarget;
-                newTarget = target {
+                newTarget = lib.kxPop target {
                   inherit refId;
                 };
               in
@@ -211,7 +227,7 @@
 
           # links
           addLink = link:
-            self (self: super: {
+            lib.extendPop self (self: super: {
               links = super.links ++ [link];
             });
           addLinks = links:
@@ -222,7 +238,7 @@
           then {
             # thresholds
             addThreshold = step:
-              self (self: super: {
+              lib.extendPop self (self: super: {
                 fieldConfig = lib.recursiveUpdate super.fieldConfig {
                   defaults.thresholds.steps =
                     super.fieldConfig.defaults.threshholds.steps ++ [step];
@@ -231,7 +247,7 @@
 
             # mappings
             addMapping = mapping:
-              self (self: super: let
+              lib.extendPop self (self: super: let
                 nextMapping = super._nextMapping;
               in {
                 _nextMapping = nextMapping + 1;
@@ -242,7 +258,7 @@
 
             # data links
             addDataLink = link:
-              self (self: super: {
+              lib.extendPop self (self: super: {
                 fieldConfig =
                   lib.recursiveUpdate super.fieldConfig
                   {defaults.links = super.fieldConfig.defaults.links ++ [link];};
@@ -253,7 +269,7 @@
               matcher ? null,
               properties ? null,
             }:
-              self (self: super: {
+              lib.extendPop self (self: super: {
                 fieldConfig = lib.recursiveUpdate super.fieldConfig {
                   overrides =
                     super.fieldConfig.overrides
@@ -272,8 +288,8 @@
           }
           else {
             # thresholds
-            addThreshhold = step:
-              self (self: super: {
+            addThreshold = step:
+              lib.extendPop self (self: super: {
                 fieldOptions = lib.recursiveUpdate super.fieldConfig {
                   defaults.thresholds.steps =
                     super.fieldOptions.defaults.threshholds.steps ++ [step];
@@ -282,7 +298,7 @@
 
             # mappings
             addMapping = mapping:
-              self (self: super: let
+              lib.extendPop self (self: super: let
                 nextMapping = super._nextMapping;
               in {
                 _nextMapping = nextMapping + 1;
@@ -293,7 +309,7 @@
 
             # data links
             addDataLink = link:
-              self (self: super: {
+              lib.extendPop self (self: super: {
                 fieldOptions =
                   lib.recursiveUpdate super.fieldConfig
                   {defaults.links = super.fieldOptions.defaults.links ++ [link];};

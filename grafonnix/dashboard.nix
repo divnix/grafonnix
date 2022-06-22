@@ -1,6 +1,4 @@
-{lib}: let
-  timepickerlib = import ./timepicker.nix {inherit lib;};
-in {
+{lib}: {
   /*
     *
    * Creates a [dashboard](https://grafana.com/docs/grafana/latest/features/dashboard/dashboards/)
@@ -42,7 +40,7 @@ in {
     time_to ? "now",
     timezone ? "browser",
     refresh ? "",
-    timepicker ? timepickerlib.new {},
+    timepicker ? lib.timepicker.new {},
     graphTooltip ? "default",
     hideControls ? false,
     schemaVersion ? 14,
@@ -50,6 +48,30 @@ in {
     description ? null,
   }:
     lib.pop {
+      # make __unpop__ recursive
+      supers = [lib.recursiveUnpop];
+
+      visibility = {
+        _annotations = false;
+        required = false;
+        inputs = false;
+        templates = false;
+        panels = false;
+        addAnnotation = false;
+        addAnnotations = false;
+        addTemplates = false;
+        addTemplate = false;
+        _nextPanel = false;
+        addRow = false;
+        addPanels = false;
+        addPanel = false;
+        addRows = false;
+        addLink = false;
+        addLinks = false;
+        addRequired = false;
+        addInput = false;
+      };
+
       extension = self: super: let
         it = self;
       in
@@ -93,12 +115,12 @@ in {
           title = title;
           version = 0;
           addAnnotations = annotations:
-            self (self: super: {
+            lib.extendPop self (self: super: {
               _annotations = super._annotations ++ annotations;
             });
           addAnnotation = a: self.addAnnotations [a];
           addTemplates = templates:
-            self (self: super: {
+            lib.extendPop self (self: super: {
               templates = super.templates ++ templates;
             });
           addTemplate = t: self.addTemplates [t];
@@ -107,25 +129,25 @@ in {
           templating = {list = it.templates;};
           _nextPanel = 2;
           addRow = row:
-            self (self: super: let
+            lib.extendPop self (self: super: let
               # automatically number panels in added rows.
               # https://github.com/kausalco/public/blob/master/klumps/grafana.libsonnet
               n = lib.length row.panels;
               nextPanel = super._nextPanel;
               panels = lib.genList (i:
-                (lib.elemAt row.panels i) {id = nextPanel + i;})
+                lib.kxPop (lib.elemAt row.panels i) {id = nextPanel + i;})
               n;
             in {
               _nextPanel = nextPanel + n;
-              rows = super.rows ++ [row {panels = panels;}];
+              rows = super.rows ++ [(lib.kxPop row {panels = panels;})];
             });
-          addPanels = newpanels:
-            self (self: super: let
+          addPanels = newpanels: let
+            extension = self: super: let
               # automatically number panels in added rows.
               # https://github.com/kausalco/public/blob/master/klumps/grafana.libsonnet
               n =
                 lib.foldl (numOfPanels: p:
-                  if p ? panels
+                  if lib.hasAttr "panels" p
                   then numOfPanels + 1 + (lib.length p.panels)
                   else numOfPanels + 1)
                 0
@@ -135,48 +157,54 @@ in {
                 lib.genList
                 (
                   i:
-                    (lib.elemAt newpanels i) {
-                      id =
-                        nextPanel
-                        + (
-                          if i == 0
-                          then 0
-                          else if lib.elem "panels" (lib.elemAt _panels (i - 1))
-                          then ((lib.elemAt _panels (i - 1)).id - nextPanel) + 1 + (lib.length (lib.elemAt _panels (i - 1)).panels)
-                          else ((lib.elemAt _panels (i - 1)).id - nextPanel) + 1
-                        );
-                    }
-                    // lib.optionalAttrs ((lib.elemAt newpanels i) ? panels) {
-                      panels = lib.genList (
-                        j:
-                          (lib.elemAt (lib.elemAt newpanels i).panels j) {
-                            id =
-                              1
-                              + j
-                              + nextPanel
-                              + (
-                                if i == 0
-                                then 0
-                                else if lib.elem "panels" (lib.elemAt _panels (i - 1))
-                                then ((lib.elemAt _panels (i - 1)).id - nextPanel) + 1 + (lib.length (lib.elemAt _panels (i - 1)).panels)
-                                else ((lib.elemAt _panels (i - 1)).id - nextPanel) + 1
-                              );
-                          }
-                      ) (lib.length ((lib.elemAt newpanels i).panels));
-                    }
+                    lib.kxPop (lib.elemAt newpanels i) ({
+                        id =
+                          nextPanel
+                          + (
+                            if i == 0
+                            then 0
+                            else if lib.hasAttr "panels" (lib.elemAt _panels (i - 1))
+                            then ((lib.elemAt _panels (i - 1)).id - nextPanel) + 1 + (lib.length (lib.elemAt _panels (i - 1)).panels)
+                            else ((lib.elemAt _panels (i - 1)).id - nextPanel) + 1
+                          );
+                      }
+                      // lib.optionalAttrs (lib.hasAttr "panels" (lib.elemAt newpanels i)) {
+                        panels = lib.genList (
+                          j:
+                            lib.kxPop (lib.elemAt (lib.elemAt newpanels i).panels j) {
+                              id =
+                                1
+                                + j
+                                + nextPanel
+                                + (
+                                  if i == 0
+                                  then 0
+                                  else if lib.hasAttr "panels" (lib.elemAt _panels (i - 1))
+                                  then ((lib.elemAt _panels (i - 1)).id - nextPanel) + 1 + (lib.length (lib.elemAt _panels (i - 1)).panels)
+                                  else ((lib.elemAt _panels (i - 1)).id - nextPanel) + 1
+                                );
+                            }
+                        ) (lib.length ((lib.elemAt newpanels i).panels));
+                      })
                 ) (lib.length newpanels);
             in {
               _nextPanel = nextPanel + n;
               panels = super.panels ++ _panels;
-            });
+            };
+          in
+            lib.pop {
+              supers = [self];
+              visibility.panels = true;
+              inherit extension;
+            };
           addPanel = {
             panel,
             gridPos,
           }:
-            self.addPanels [(panel {gridPos = gridPos;})];
+            self.addPanels [(lib.kxPop panel {gridPos = gridPos;})];
           addRows = rows: lib.foldl (d: row: d.addRow row) self rows;
           addLink = link:
-            self (self: super: {
+            lib.extendPop self (self: super: {
               links = super.links ++ [link];
             });
           addLinks = dashboardLinks: lib.foldl (d: t: d.addLink t) self dashboardLinks;
@@ -188,7 +216,7 @@ in {
             id,
             version,
           }:
-            self (self: super: {
+            lib.extendPop self (self: super: {
               required =
                 super.required
                 ++ [
@@ -211,7 +239,7 @@ in {
             description ? "",
             value ? null,
           }:
-            self (self: super: {
+            lib.extendPop self (self: super: {
               inputs =
                 super.inputs
                 ++ [

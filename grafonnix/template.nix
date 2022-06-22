@@ -205,6 +205,9 @@
     }:
       lib.pop
       {
+        visibility = {
+          "query_array" = false;
+        };
         extension = self: super: let
           # self has dynamic scope, so self may not be myself below.
           # "outer" can"t be used neither as this object is not top-level object.

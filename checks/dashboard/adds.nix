@@ -21,7 +21,7 @@ in
     .addPanel {panel=row.new {title="id1";}; gridPos={ x= 24; y= 52; w= 43; h= 36; };})
     .addPanel {panel=row.new {title="id2";}; gridPos={ x= 34; y= 62; w= 53; h= 36; };})
     .addPanel {panel=row.new {title="id5";}; gridPos={ x= 44; y= 72; w= 63; h= 46; };})
-    .addPanels [ ((row.new {title="id5";}) // { x= 41; y= 71; w= 61; h= 41; })]).__unpop__
+    .addPanels [ (lib.kxPop (row.new {title="id5";}) { x= 41; y= 71; w= 61; h= 41; })]).__unpop__
 
   (((((dashboard.new {title="test2";})
     .addPanel {panel=row.new {title="id0";}; gridPos={ x= 14; y= 42; w= 33; h= 26; };})
@@ -32,7 +32,7 @@ in
   (((dashboard.new {title="subId";})
   .addPanels
     [
-      (row.new {title="id0"; height="250px";} // {
+      (lib.kxPop (row.new {title="id0"; height="250px";}) {
         panels= [
           (kPop { foo= "id1"; })
           (kPop { bar= "id2"; })
@@ -44,7 +44,7 @@ in
       (kPop { title= "id6"; })
       (kPop { title= "id7"; })
       (kPop { title= "id8"; })
-      (row.new {title="id9"; height="250px";} // {
+      (lib.kxPop (row.new {title="id9"; height="250px";}) {
         panels= [
           (kPop { foo= "id10";})
           (kPop { bar= "id11";})
@@ -57,7 +57,7 @@ in
   )
   .addPanels
     [
-      (row.new {title="id15";} // {
+      (lib.kxPop (row.new {title="id15";}) {
         panels= [
           (kPop { foo= "id16";})
           (kPop { bar= "id17";})

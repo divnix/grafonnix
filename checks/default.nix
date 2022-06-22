@@ -37,7 +37,8 @@ in {
               "\n-------------------\n"
               (
                 map
-                (nixlib.lib.generators.toPretty {})
+                (lib.generators.toPretty {})
+                #builtins.toJSON
                 runTests
               )
             )

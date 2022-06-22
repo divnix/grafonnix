@@ -1,7 +1,7 @@
 {
   inputs.yants.url = "github:divnix/yants";
   inputs.nixlib.url = "github:nix-community/nixpkgs.lib";
-  inputs.POP.url = "github:divnix/POP/extenders";
+  inputs.POP.url = "github:divnix/POP/visibility";
 
   # Development Dependencies
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.05";
@@ -22,7 +22,11 @@
     nixpkgs,
     ...
   }: let
-    lib = POP.lib // nixlib.lib;
+    lib =
+      POP.lib
+      // nixlib.lib
+      // self.lib
+      // (import ./internal {inherit lib;});
 
     supportedSystems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin"];
     # Pass this flake(self) as "grafonnix"

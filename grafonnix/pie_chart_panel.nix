@@ -43,6 +43,11 @@
     maxPerRow ? null,
   }:
     lib.pop {
+      visibility = {
+        _nextTarget = false;
+        addTarget = false;
+      };
+
       extension = self: super:
         {
           type = "grafana-piechart-panel";
@@ -86,12 +91,12 @@
 
           _nextTarget = 0;
           addTarget = target:
-            self (self: super: {
+            lib.extendPop self (self: super: {
               _nextTarget = super._nextTarget + 1;
               targets = let
                 letters = ["A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z"];
                 refId = builtins.elemAt letters super._nextTarget;
-                newTarget = target {
+                newTarget = lib.kxPop target {
                   inherit refId;
                 };
               in

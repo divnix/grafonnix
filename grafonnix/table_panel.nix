@@ -45,6 +45,16 @@
     links ? [],
   }:
     lib.pop {
+      visibility = {
+        _nextTarget = false;
+        addTarget = false;
+        addTargets = false;
+        addColumn = false;
+        hideColumn = false;
+        addLink = false;
+        addTransformation = false;
+        addTransformations = false;
+      };
       defaults =
         {
           type = "table";
@@ -85,12 +95,12 @@
         };
       extension = self: super: {
         addTarget = target:
-          self (self: super: {
+          lib.extendPop self (self: super: {
             _nextTarget = super._nextTarget + 1;
             targets = let
               letters = ["A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z"];
               refId = builtins.elemAt letters super._nextTarget;
-              newTarget = target {
+              newTarget = lib.kxPop target {
                 inherit refId;
               };
             in
@@ -106,13 +116,13 @@
             value = field;
           };
         in
-          self (self: super: {
+          lib.extendPop self (self: super: {
             styles = super.styles ++ [style_];
             columns = super.columns ++ [column_];
           });
 
         hideColumn = field:
-          self (self: super: {
+          lib.extendPop self (self: super: {
             styles =
               super.styles
               ++ [
@@ -124,11 +134,11 @@
               ];
           });
         addLink = link:
-          self (self: super: {
+          lib.extendPop self (self: super: {
             links = super.links ++ [link];
           });
         addTransformation = transformation:
-          self (self: super: {
+          lib.extendPop self (self: super: {
             transformations = super.transformations ++ [transformation];
           });
         addTransformations = transformations:

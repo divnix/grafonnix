@@ -33,34 +33,34 @@
   }:
     POP.lib.kPop
     (nixlib.lib.optionalAttrs (transparent != null) {
-      inherit transparent;
-    })
-    // {
-      title = title;
-    }
-    // nixlib.lib.optionalAttrs (span != null) {
-      span = span;
-    }
-    // {
-      type = "text";
-    }
-    // {
-      mode = mode;
-      content = content;
-    }
-    // nixlib.lib.optionalAttrs (description != null) {
-      description = description;
-    }
-    // {
-      datasource = datasource;
-    }
-    // nixlib.lib.optionalAttrs (repeat != null) {
-      repeat = repeat;
-    }
-    // nixlib.lib.optionalAttrs (repeat != null) {
-      repeatDirection = repeatDirection;
-    }
-    // nixlib.lib.optionalAttrs (repeat != null) {
-      repeatMaxPerRow = repeatMaxPerRow;
-    };
+        inherit transparent;
+      }
+      // {
+        title = title;
+      }
+      // nixlib.lib.optionalAttrs (span != null) {
+        span = span;
+      }
+      // {
+        type = "text";
+      }
+      // {
+        mode = mode;
+        content = content;
+      }
+      // nixlib.lib.optionalAttrs (description != null) {
+        description = description;
+      }
+      // {
+        datasource = datasource;
+      }
+      // nixlib.lib.optionalAttrs (repeat != null) {
+        repeat = repeat;
+      }
+      // nixlib.lib.optionalAttrs (repeat != null) {
+        repeatDirection = repeatDirection;
+      }
+      // nixlib.lib.optionalAttrs (repeat != null) {
+        repeatMaxPerRow = repeatMaxPerRow;
+      });
 }

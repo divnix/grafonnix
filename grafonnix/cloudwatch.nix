@@ -35,22 +35,24 @@
     expression ? null,
     hide ? null,
   }:
-    lib.kPop {
-      region = region;
-      namespace = namespace;
-      metricName = metric;
-    }
-    // lib.optionalAttrs (datasource != null) {datasource = datasource;}
-    // {
-      statistics = [statistic];
-    }
-    // lib.optionalAttrs (alias != null) {alias = alias;}
-    // {
-      highResolution = highResolution;
-      period = period;
-      dimensions = dimensions;
-    }
-    // lib.optionalAttrs (id != null) {id = id;}
-    // lib.optionalAttrs (expression != null) {expression = expression;}
-    // lib.optionalAttrs (hide != null) {hide = hide;};
+    lib.kPop (
+      {
+        region = region;
+        namespace = namespace;
+        metricName = metric;
+      }
+      // lib.optionalAttrs (datasource != null) {datasource = datasource;}
+      // {
+        statistics = [statistic];
+      }
+      // lib.optionalAttrs (alias != null) {alias = alias;}
+      // {
+        highResolution = highResolution;
+        period = period;
+        dimensions = dimensions;
+      }
+      // lib.optionalAttrs (id != null) {id = id;}
+      // lib.optionalAttrs (expression != null) {expression = expression;}
+      // lib.optionalAttrs (hide != null) {hide = hide;}
+    );
 }

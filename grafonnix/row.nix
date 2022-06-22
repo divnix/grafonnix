@@ -8,6 +8,11 @@
     titleSize ? "h6",
   }:
     lib.pop {
+      visibility = {
+        addPanels = false;
+        addPanel = false;
+      };
+
       defaults =
         {
           inherit collapse;
@@ -33,17 +38,17 @@
 
       extension = self: super: {
         addPanels = panels:
-          self (self: super: {
+          lib.extendPop self (self: super: {
             panels = super.panels ++ panels;
           });
         addPanel = {
           panel,
           gridPos ? {},
         }:
-          self (self: super: {
+          lib.extendPop self (self: super: {
             panels =
               super.panels
-              ++ [(panel {inherit gridPos;})];
+              ++ [(lib.kxPop panel {inherit gridPos;})];
           });
       };
     };

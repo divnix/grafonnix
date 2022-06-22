@@ -20,15 +20,15 @@
     textEditor ? false,
     datasource ? null,
   }:
-    lib.kPop {
-      target = target;
-      hide = hide;
-      textEditor = textEditor;
-    }
-    // lib.optionalAttrs (targetFull != null) {
-      inherit targetFull;
-    }
-    // lib.optionalAttrs (datasource != null) {
-      inherit datasource;
-    };
+    lib.kPop ({
+        target = target;
+        hide = hide;
+        textEditor = textEditor;
+      }
+      // lib.optionalAttrs (targetFull != null) {
+        inherit targetFull;
+      }
+      // lib.optionalAttrs (datasource != null) {
+        inherit datasource;
+      });
 }

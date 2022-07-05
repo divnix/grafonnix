@@ -70,6 +70,8 @@
       transformation = import ./grafonnix/transformation.nix {inherit lib;};
     };
     checks = polyfillOutput ./checks;
+    packages = polyfillOutput ./packages.nix;
+    devShells = polyfillOutput ./devShells.nix;
     formatter = nixlib.lib.genAttrs supportedSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
   };
 }

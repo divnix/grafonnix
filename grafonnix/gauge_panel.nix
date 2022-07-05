@@ -112,7 +112,7 @@
           _nextMapping = 0;
         }
         // (
-          if lib.toInt pluginVersion >= 7
+          if pluginVersion >= "7"
           then {
             options = {
               reduceOptions =
@@ -234,7 +234,7 @@
             lib.foldl (p: t: p.addLink t) self links;
         }
         // (
-          if lib.toInt pluginVersion >= 7
+          if pluginVersion >= "7"
           then {
             # thresholds
             addThreshold = step:

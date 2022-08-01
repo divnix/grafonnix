@@ -1,6 +1,9 @@
-{ pkgs ? (import ../.).inputs.nixpkgs.legacyPackages.${builtins.currentSystem} }:
-
-pkgs.haskellPackages.callPackage (
+{ system, inputs }:
+let
+  pkgs = inputs.nixpkgs.legacyPackages.${system};
+in
+{
+  converter = pkgs.haskellPackages.callPackage (
 
 { mkDerivation, aeson, aeson-better-errors, async-pool, base
 , bytestring, containers, data-fix, directory, filepath, hnix
@@ -11,7 +14,7 @@ pkgs.haskellPackages.callPackage (
 mkDerivation {
   pname = "grafonnix-converter";
   version = "0.1.0";
-  src = ./.;
+  src = ./converter;
   isLibrary = false;
   isExecutable = true;
   libraryToolDepends = [ hpack ];
@@ -27,4 +30,5 @@ mkDerivation {
   license = lib.licenses.mit;
 }
 
-) {}
+) {};
+}

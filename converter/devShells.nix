@@ -18,12 +18,11 @@ in
         };
         modifier = drv:
           pkgs.haskell.lib.addBuildTools drv (with pkgs.haskellPackages;
-            [ cabal-install
-              ghcid
+            [ ghcid
+              cabal-install
               pkgs.zlib
               pkgs.pkg-config
               pkgs.libsodium
-              cabal2nix
             ]);
       };
 
